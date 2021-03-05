@@ -1,0 +1,62 @@
+---
+title: "Procurement Survey Analytics"
+author: "Preethi G"
+date: "04/03/2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## R Markdown
+
+We shall briefly analyse the results so far from the procurements capabilties survey. 
+
+```{r read file}
+library(tidyr)
+library(dplyr)
+library(data.table)
+library(plot)
+ 
+survey <- read.csv ("2021-03-04_21 23 01_survey__pu.csv", row.names = NULL,
+                                stringsAsFactors = FALSE)
+
+##seperate the third column by comma spaces
+survey <- survey %>% separate (X2..What.do.you.think.is.the.biggest.problem.within.public.procurements.in.India., c("A","B","C","D","E"), sep=",")
+##Create list of columns to subset
+newvar <- c("A","B","C","D","E")
+#Subset table
+problem <- survey[newvar]
+problem$A <- trimws(problem$A)
+problem$B <- trimws(problem$B)
+problem$C <- trimws(problem$C)
+problem$D <- trimws(problem$D)
+problem$E <- trimws(problem$E)
+#Make vector
+problem_vec <- unlist(problem)
+#make new table
+problem_table <- table(problem_vec)
+pie(problem_table)
+```
+According to this pie-chart, the two major problems in public procurement right now are inefficiency and corruption. 
+Now we can see the distribution of the experience in public procurements of people responding to this survey
+```{r pressure}
+library(ggplot2)
+##Since the survey was changed after a few responses, we will first normalize the data available
+survey <- data.frame(lapply(survey, function(x) {
+                gsub("Less than 6 months", "I am not familiar with public procurement data", x)}))
+
+survey <- data.frame(lapply(survey, function(x) {
+                gsub("1 - 2 years", "I occasionaly work with public procurement data", x)}))
+
+survey <- data.frame(lapply(survey, function(x) {
+                gsub("More than two years", "I regularly work with and analyze public procurement data", x)}))
+
+counts <- table(survey$X1.How.familiar.are.you.with.public.procurement.data.)
+
+g <- ggplot(survey, aes(X1.How.familiar.are.you.with.public.procurement.data.)) + geom_bar() +theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))
+g
+```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
