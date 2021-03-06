@@ -41,7 +41,7 @@ pie(problem_table)
 ```
 According to this pie-chart, the two major problems in public procurement right now are inefficiency and corruption. 
 Now we can see the distribution of the experience in public procurements of people responding to this survey
-```{r pressure}
+```{r experience}
 library(ggplot2)
 ##Since the survey was changed after a few responses, we will first normalize the data available
 survey <- data.frame(lapply(survey, function(x) {
@@ -60,4 +60,28 @@ g <- ggplot(survey, aes(X1.How.familiar.are.you.with.public.procurement.data.)) 
 g
 ```
 
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+Now we will look at what the problems with the data are
+```{r data}
+library(ggplot2)
+##separate the third column by comma spaces
+survey <- survey %>% separate (X3..What.is.the.biggest.challenge.you.face.while.working.with.public.procurement.data., c("A","B","C","D","E"), sep=",")
+
+##Create list of columns to subset
+newvar <- c("A","B","C","D","E")
+#Subset table
+problem <- survey[newvar]
+
+problem$A <- trimws(problem$A)
+problem$B <- trimws(problem$B)
+problem$C <- trimws(problem$C)
+problem$D <- trimws(problem$D)
+problem$E <- trimws(problem$E)
+#Make vector
+problem_vec <- unlist(problem)
+#make new table
+problem_table <- data.frame(table(problem_vec))
+
+g <- ggplot(problem_table, aes(x = problem_vec, y = Freq)) + geom_bar(stat = "identity") +theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))
+g
+
+```
