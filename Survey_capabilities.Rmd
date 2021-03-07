@@ -19,8 +19,12 @@ library(dplyr)
 library(data.table)
 
  
-survey <- read.csv ("2021-03-04_21 23 01_survey__pu.csv", row.names = NULL,
+#survey <- read.csv ("2021-03-04_21 23 01_survey__pu.csv", row.names = NULL,
+ #                               stringsAsFactors = FALSE)
+
+survey <- read.csv ("2021-03-05_22 08 34_survey__pu.csv", row.names = NULL,
                                 stringsAsFactors = FALSE)
+
 
 ##seperate the third column by comma spaces
 survey <- survey %>% separate (X2..What.do.you.think.is.the.biggest.problem.within.public.procurements.in.India., c("A","B","C","D","E"), sep=",")
@@ -65,6 +69,139 @@ Now we will look at what the problems with the data are
 library(ggplot2)
 ##separate the third column by comma spaces
 survey <- survey %>% separate (X3..What.is.the.biggest.challenge.you.face.while.working.with.public.procurement.data., c("A","B","C","D","E"), sep=",")
+
+##Create list of columns to subset
+newvar <- c("A","B","C","D","E")
+#Subset table
+problem <- survey[newvar]
+
+problem$A <- trimws(problem$A)
+problem$B <- trimws(problem$B)
+problem$C <- trimws(problem$C)
+problem$D <- trimws(problem$D)
+problem$E <- trimws(problem$E)
+#Make vector
+problem_vec <- unlist(problem)
+#make new table
+problem_table <- data.frame(table(problem_vec))
+
+g <- ggplot(problem_table, aes(x = problem_vec, y = Freq)) + geom_bar(stat = "identity") +theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))
+g
+
+```
+Now we will look at what kind of analytics is most preferred 
+```{r analytics}
+library(ggplot2)
+##separate the third column by comma spaces
+survey <- survey %>% separate (X5..What.kind.of.analytics.would.you.like.to.see.within.public.procurements, c("A","B","C","D","E"), sep=",")
+
+##Create list of columns to subset
+newvar <- c("A","B","C","D","E")
+#Subset table
+problem <- survey[newvar]
+
+problem$A <- trimws(problem$A)
+problem$B <- trimws(problem$B)
+problem$C <- trimws(problem$C)
+problem$D <- trimws(problem$D)
+problem$E <- trimws(problem$E)
+#Make vector
+problem_vec <- unlist(problem)
+#make new table
+problem_table <- data.frame(table(problem_vec))
+
+g <- ggplot(problem_table, aes(x = problem_vec, y = Freq)) + geom_bar(stat = "identity") +theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))
+g
+
+```
+
+How can we make your life easier
+
+```{r analytics}
+library(ggplot2)
+##separate the third column by comma spaces
+survey <- survey %>% separate (X4..How.can.we.make.your.life.easier.while.working.with.public.procurement.data., c("A","B","C","D","E"), sep=",")
+
+##Create list of columns to subset
+newvar <- c("A","B","C","D","E")
+#Subset table
+problem <- survey[newvar]
+
+problem$A <- trimws(problem$A)
+problem$B <- trimws(problem$B)
+problem$C <- trimws(problem$C)
+problem$D <- trimws(problem$D)
+problem$E <- trimws(problem$E)
+#Make vector
+problem_vec <- unlist(problem)
+#make new table
+problem_table <- data.frame(table(problem_vec))
+
+g <- ggplot(problem_table, aes(x = problem_vec, y = Freq)) + geom_bar(stat = "identity") +theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))
+g
+
+library(ggplot2)
+##separate the third column by comma spaces
+survey <- survey %>% separate (X5..What.kind.of.analytics.would.you.like.to.see.within.public.procurements, c("A","B","C","D","E"), sep=",")
+
+##Create list of columns to subset
+newvar <- c("A","B","C","D","E")
+#Subset table
+problem <- survey[newvar]
+
+problem$A <- trimws(problem$A)
+problem$B <- trimws(problem$B)
+problem$C <- trimws(problem$C)
+problem$D <- trimws(problem$D)
+problem$E <- trimws(problem$E)
+#Make vector
+problem_vec <- unlist(problem)
+#make new table
+problem_table <- data.frame(table(problem_vec))
+
+g <- ggplot(problem_table, aes(x = problem_vec, y = Freq)) + geom_bar(stat = "identity") +theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))
+g
+
+```
+
+```{r capacity build}
+
+counts <- table(survey$X7..Would.you.be.interested.in.a.workshop.on.the.use.of.public.procurement.data.)
+
+g <- ggplot(survey, aes(X7..Would.you.be.interested.in.a.workshop.on.the.use.of.public.procurement.data.)) + geom_bar() +theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))
+
+g
+
+library(ggplot2)
+##separate the third column by comma spaces
+survey <- survey %>% separate (X8..If.we.were.to.do.a.capacity.building.workshop.around.public.procurement.data..what.would.you.find.most.useful., c("A","B","C","D","E"), sep=",")
+
+##Create list of columns to subset
+newvar <- c("A","B","C","D","E")
+#Subset table
+problem <- survey[newvar]
+
+problem$A <- trimws(problem$A)
+problem$B <- trimws(problem$B)
+problem$C <- trimws(problem$C)
+problem$D <- trimws(problem$D)
+problem$E <- trimws(problem$E)
+#Make vector
+problem_vec <- unlist(problem)
+#make new table
+problem_table <- data.frame(table(problem_vec))
+
+g <- ggplot(problem_table, aes(x = problem_vec, y = Freq)) + geom_bar(stat = "identity") +theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))
+g
+
+```
+Areas of interest
+
+```{r capacity build}
+
+library(ggplot2)
+##separate the third column by comma spaces
+survey <- survey %>% separate (X12..Please.choose.upto.3.topics.of.interest.for.you, c("A","B","C","D","E"), sep=",")
 
 ##Create list of columns to subset
 newvar <- c("A","B","C","D","E")
